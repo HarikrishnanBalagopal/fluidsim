@@ -8,19 +8,21 @@ import (
 
 func TestStep(t *testing.T) {
 	t.Run("try multiple steps", func(t *testing.T) {
-		time := 0.1
+		var time float32 = 0.1
+		const dt float32 = 0.1
 		for time < 10.0 {
-			utils.Step(time)
-			time += .1
+			utils.Step(time, dt)
+			time += dt
 		}
 	})
 }
 
 func BenchmarkStep(t *testing.B) {
 	t.Run("run multiple steps", func(t *testing.B) {
-		time := 0.1
+		var time float32 = 0.1
+		const dt float32 = 0.1
 		for time < 10.0 {
-			utils.Step(time)
+			utils.Step(time, dt)
 			time += .1
 		}
 	})

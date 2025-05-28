@@ -148,8 +148,8 @@ func add_forces(t float32, dt float32) {
 	if !MOUSE_DOWN {
 		return
 	}
-	x := int(math.Floor(float64(MOUSE_X)))
-	y := int(math.Floor(float64(MOUSE_Y)))
+	x := MOUSE_X
+	y := MOUSE_Y
 
 	u := float32(10 * (MOUSE_X - LAST_MOUSE_X))
 	v := float32(10 * (MOUSE_Y - LAST_MOUSE_Y))
@@ -220,7 +220,8 @@ func draw() {
 	// CANVAS_CTX.putImageData(IMG_DATA, 0, 0)
 }
 
-func setup() {
+//go:wasmexport Setup
+func Setup() {
 	for y := 0; y < H; y++ {
 		for x := 0; x < W; x++ {
 			i := y*W + x
@@ -244,4 +245,35 @@ func setup() {
 		}
 	}
 	// draw();
+}
+
+/*
+  const step = (_t) => {
+    requestAnimationFrame(step);
+    const t = _t * 0.001;
+    if (last_t < 0) last_t = t;
+    const dt = t - last_t;
+    if (dt < 0.001) return;
+    last_t = t;
+    const frame_time = _t - last_frame_t;
+    last_frame_t = _t;
+    const fps = Math.round(100000 / frame_time) / 100;
+    SPAN_FRAME_COUNTER.textContent = fps;
+    advect_vel_color(t, dt);
+    add_forces(t, dt);
+    divergence_vel(t, dt);
+    calc_pressure_jacobi(t, dt);
+    sub_gradient_pressure(t, dt);
+    draw();
+  };
+*/
+
+//go:wasmexport Step
+func Step(t float32, dt float32) {
+	advect_vel_color(t, dt)
+	add_forces(t, dt)
+	divergence_vel(t, dt)
+	calc_pressure_jacobi(t, dt)
+	sub_gradient_pressure(t, dt)
+	draw()
 }
