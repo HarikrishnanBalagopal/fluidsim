@@ -68,11 +68,6 @@ func Draw() {
 	fmt.Println(string(out[:]))
 }
 
-//go:wasmexport GetBufferAddress
-func GetBufferAddress() *[H][W + 1]byte {
-	return &BUFFER_1
-}
-
 func InitializeBuffer() {
 	for i := range BUFFER_1 {
 		BUFFER_1[i][W] = '\n'

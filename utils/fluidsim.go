@@ -209,9 +209,9 @@ func draw() {
 		// const g = A_VEL_V[i] * 2.55;
 		// const g = A_PRESS[i];// * 255;
 		// const r = g;
-		r := A_COLOR[i] * 255
-		g := A_COLOG[i] * 255
-		b := A_COLOB[i] * 255
+		r := uint8(A_COLOR[i] * 255)
+		g := uint8(A_COLOG[i] * 255)
+		b := uint8(A_COLOB[i] * 255)
 		PIX_DATA[j+0] = r
 		PIX_DATA[j+1] = g
 		PIX_DATA[j+2] = b
@@ -235,9 +235,9 @@ func setup() {
 			// A_COLOG[i] = clamp(i3, 0, 1);
 			// A_COLOB[i] = clamp(i3, 0, 1);
 			j := i * 4
-			r := PIX_DATA_COPY[j+0] / 255
-			g := PIX_DATA_COPY[j+1] / 255
-			b := PIX_DATA_COPY[j+2] / 255
+			r := float32(PIX_DATA_COPY[j+0]) / 255
+			g := float32(PIX_DATA_COPY[j+1]) / 255
+			b := float32(PIX_DATA_COPY[j+2]) / 255
 			A_COLOR[i] = clamp(r, 0, 1)
 			A_COLOG[i] = clamp(g, 0, 1)
 			A_COLOB[i] = clamp(b, 0, 1)

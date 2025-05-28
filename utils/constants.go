@@ -3,6 +3,7 @@ package utils
 const W = 480
 const H = W
 const LEN = W * H
+const LEN_4 = LEN * 4
 const CELL_DIST = 1
 const DENSITY = 1
 
@@ -23,8 +24,8 @@ var A_PRESS = [LEN]float32{}
 var A_VEL_U = [LEN]float32{}
 var A_VEL_V = [LEN]float32{}
 
-var PIX_DATA = [LEN]float32{}
-var PIX_DATA_COPY = [LEN]float32{}
+var PIX_DATA = [LEN_4]uint8{}
+var PIX_DATA_COPY = [LEN_4]uint8{}
 
 const MOUSE_SIZE = 20
 
