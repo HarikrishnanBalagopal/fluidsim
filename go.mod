@@ -1,3 +1,3 @@
-module github.com/HarikrishnanBalagopal/asciidonut
+module github.com/HarikrishnanBalagopal/fluidsim
 
 go 1.24

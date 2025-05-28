@@ -3,7 +3,7 @@ package utils_test
 import (
 	"testing"
 
-	"github.com/HarikrishnanBalagopal/asciidonut/utils"
+	"github.com/HarikrishnanBalagopal/fluidsim/utils"
 )
 
 func TestStep(t *testing.T) {

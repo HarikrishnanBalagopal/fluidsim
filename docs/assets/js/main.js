@@ -65,7 +65,7 @@ async function main() {
         setTimeout(() => copy_alert.classList.add('hidden'), 1000);
     });
 
-    const res = await fetch('assets/wasm/asciidonut.wasm');
+    const res = await fetch('assets/wasm/fluidsim.wasm');
     if (!res.ok) return console.error('failed to fetch the wasm module. status:', res.status);
     const moduleBytes = await res.arrayBuffer();
     const go = new Go();

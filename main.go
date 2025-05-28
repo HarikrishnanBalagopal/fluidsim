@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/HarikrishnanBalagopal/asciidonut/utils"
+	"github.com/HarikrishnanBalagopal/fluidsim/utils"
 )
 
 func main() {

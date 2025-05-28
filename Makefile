@@ -4,19 +4,19 @@ clean:
 
 .PHONY: build
 build:
-	go build -o bin/asciidonut
+	go build -o bin/fluidsim
 
 .PHONY: build-wasm
 build-wasm:
-	GOOS=js GOARCH=wasm go build -o bin/asciidonut.wasm
+	GOOS=js GOARCH=wasm go build -o bin/fluidsim.wasm
 
 .PHONY: build-tiny-wasm
 build-tiny-wasm:
-	tinygo build -o bin/asciidonut.wasm -target wasm
+	tinygo build -o bin/fluidsim.wasm -target wasm
 
 .PHONY: copy
 copy:
-	cp bin/asciidonut.wasm docs/assets/wasm/
+	cp bin/fluidsim.wasm docs/assets/wasm/
 
 .PHONY: serve
 serve:
