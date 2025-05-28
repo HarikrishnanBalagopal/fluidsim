@@ -76,7 +76,7 @@ async function main() {
     const decoder = new TextDecoder();
     const address = module.instance.exports.GetBufferAddress();
     // console.log('address', address);
-    const mem = new Uint8Array(module.instance.exports.memory.buffer, address, 32 * (64 + 1));
+    const mem = new Uint8Array(module.instance.exports.mem.buffer, address, 32 * (64 + 1));
     // console.log('mem', mem);
 
     let last_t = null;

@@ -47,7 +47,7 @@ func calc_pixel_color(x, y, t float64) float64 {
 	return Ip
 }
 
-//go:export Step
+//go:wasmexport Step
 func Step(t float64) {
 
 	for y := 0; y < H; y++ {
@@ -68,7 +68,7 @@ func Draw() {
 	fmt.Println(string(out[:]))
 }
 
-//go:export GetBufferAddress
+//go:wasmexport GetBufferAddress
 func GetBufferAddress() *[H][W + 1]byte {
 	return &BUFFER_1
 }
