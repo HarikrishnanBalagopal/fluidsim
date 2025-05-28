@@ -1,27 +1,36 @@
 package utils
 
-const (
-	N              = 32
-	W              = N * 2
-	H              = N
-	MAX_ITERATIONS = N
-	EPS            = 0.001
-	// https://en.wikipedia.org/wiki/Phong_reflection_model
-	AMBIENT_REFLECTION_CONSTANT = 0.1
-	AMBIENT_LIGHT_INTENSITY     = 255.0
-	DIFFUSE_REFLECTION_CONSTANT = 0.9
-	DIFFUSE_LIGHT_INTENSITY     = 255.0
-	// SPECULAR_REFLECTION_CONSTANT = 0.1
-	// MATERIAL_SHININESS_CONSTANT = 0.1
-)
+const W = 480
+const H = W
+const LEN = W * H
+const CELL_DIST = 1
+const DENSITY = 1
 
-var (
-	// ASCII (old set of characters), these are my own
-	// ASCII    = []byte{' ', '.', ',', '-', '+', '*', 'o', '0', '@', '#'}
-	// ASCII (new set of characters) taken from https://www.a1k0n.net/2011/07/20/donut-math.html
-	//           output[xp, yp] = ".,-~:;=!*#$@"[luminance_index];
-	ASCII    = []byte{' ', '.', ',', '-', '~', ':', ';', '=', '!', '*', '#', '$', '@'}
-	BUFFER_1 = [H][W + 1]byte{}
-)
+var INK_COLOR_R float32 = 0
+var INK_COLOR_G float32 = 0
+var INK_COLOR_B float32 = 0
 
-const ASCII_LEN = 13 // (old set has length 10)
+var A_OUTPUT_1 = [LEN]float32{}
+var A_OUTPUT_2 = [LEN]float32{}
+var A_OUTPUT_3 = [LEN]float32{}
+var A_OUTPUT_4 = [LEN]float32{}
+var A_OUTPUT_5 = [LEN]float32{}
+
+var A_COLOR = [LEN]float32{}
+var A_COLOG = [LEN]float32{}
+var A_COLOB = [LEN]float32{}
+var A_PRESS = [LEN]float32{}
+var A_VEL_U = [LEN]float32{}
+var A_VEL_V = [LEN]float32{}
+
+var PIX_DATA = [LEN]float32{}
+var PIX_DATA_COPY = [LEN]float32{}
+
+const MOUSE_SIZE = 20
+
+var MOUSE_DOWN = false
+var LAST_MOUSE_X = 0
+var LAST_MOUSE_Y = 0
+var MOUSE_X = 0
+var MOUSE_Y = 0
+var REQUESTED_ANIMATION = false
