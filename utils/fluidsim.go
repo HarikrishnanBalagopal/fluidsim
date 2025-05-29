@@ -220,33 +220,6 @@ func draw() {
 	// CANVAS_CTX.putImageData(IMG_DATA, 0, 0)
 }
 
-//go:wasmexport Setup
-func Setup() {
-	for y := 0; y < H; y++ {
-		for x := 0; x < W; x++ {
-			i := y*W + x
-			xy := float64(x+y) / 100
-			A_VEL_U[i] = float32(100 * math.Sin(xy))
-			A_VEL_V[i] = float32(100 * math.Cos(xy))
-			A_PRESS[i] = 0
-			// const i1 = Math.floor((10 * x) / W) % 2;
-			// const i2 = Math.floor((10 * y) / H) % 2;
-			// const i3 = (i1 + i2) % 2;
-			// A_COLOR[i] = clamp(i3, 0, 1);
-			// A_COLOG[i] = clamp(i3, 0, 1);
-			// A_COLOB[i] = clamp(i3, 0, 1);
-			j := i * 4
-			r := float32(PIX_DATA_COPY[j+0]) / 255
-			g := float32(PIX_DATA_COPY[j+1]) / 255
-			b := float32(PIX_DATA_COPY[j+2]) / 255
-			A_COLOR[i] = clamp(r, 0, 1)
-			A_COLOG[i] = clamp(g, 0, 1)
-			A_COLOB[i] = clamp(b, 0, 1)
-		}
-	}
-	// draw();
-}
-
 /*
   const step = (_t) => {
     requestAnimationFrame(step);
@@ -277,3 +250,34 @@ func Step(t float32, dt float32) {
 	sub_gradient_pressure(t, dt)
 	draw()
 }
+
+//go:wasmexport Setup
+func Setup() {
+	for y := 0; y < H; y++ {
+		for x := 0; x < W; x++ {
+			i := y*W + x
+			xy := float64(x+y) / 100
+			A_VEL_U[i] = float32(100 * math.Sin(xy))
+			A_VEL_V[i] = float32(100 * math.Cos(xy))
+			A_PRESS[i] = 0
+			// const i1 = Math.floor((10 * x) / W) % 2;
+			// const i2 = Math.floor((10 * y) / H) % 2;
+			// const i3 = (i1 + i2) % 2;
+			// A_COLOR[i] = clamp(i3, 0, 1);
+			// A_COLOG[i] = clamp(i3, 0, 1);
+			// A_COLOB[i] = clamp(i3, 0, 1);
+			j := i * 4
+			r := float32(PIX_DATA_COPY[j+0]) / 255
+			g := float32(PIX_DATA_COPY[j+1]) / 255
+			b := float32(PIX_DATA_COPY[j+2]) / 255
+			A_COLOR[i] = clamp(r, 0, 1)
+			A_COLOG[i] = clamp(g, 0, 1)
+			A_COLOB[i] = clamp(b, 0, 1)
+		}
+	}
+	// draw();
+}
+
+// Placeholder is just here to make sure the compiler
+// includes this module in the final binary.
+func Placeholder() {}
