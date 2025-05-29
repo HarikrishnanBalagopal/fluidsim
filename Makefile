@@ -10,6 +10,10 @@ build:
 build-wasm:
 	GOOS=js GOARCH=wasm go build -o bin/fluidsim.wasm
 
+.PHONY: decomp
+decomp:
+	wasm2wat bin/fluidsim.wasm > bin/fluidsim.wat
+
 .PHONY: build-tiny-wasm
 build-tiny-wasm:
 	tinygo build -o bin/fluidsim.wasm -target wasm
