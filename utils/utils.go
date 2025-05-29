@@ -1,8 +1,14 @@
 package utils
 
-// func Radians(degrees float64) float64 {
-// 	return math.Pi * degrees / 180.0
-// }
+//go:wasmexport GetConstWidth
+func GetConstWidth() int32 {
+	return W
+}
+
+//go:wasmexport GetConstHeight
+func GetConstHeight() int32 {
+	return H
+}
 
 //go:wasmexport GetAddrA_OUTPUT_1
 func GetAddrA_OUTPUT_1() *[LEN]float32 {
