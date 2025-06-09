@@ -38,32 +38,42 @@ function copyTextToClipboard(text) {
 }
 
 async function main() {
-    const button_play_pause = document.querySelector('#button-play-pause');
+    const W = 480;
+    const H = W;
+    const canvas_output = document.querySelector('#canvas-output');
+    canvas_output.width = W;
+    canvas_output.height = H;
+    const canvas_output_ctx = canvas_output.getContext('2d');
+    const img_data = canvas_output_ctx.getImageData(0, 0, W, H);
+    const pix_data = img_data.data;
+
+
+    // const button_play_pause = document.querySelector('#button-play-pause');
     let paused = false;
     let first = null;
     let offset = 2000.0;
-    button_play_pause.addEventListener('click', () => {
-        paused = !paused;
-        if (paused) {
-            console.log('pausing');
-            button_play_pause.textContent = '▶️ Play';
-        } else {
-            console.log('playing');
-            requestAnimationFrame(draw);
-            button_play_pause.textContent = '⏸ Pause';
-        }
-    })
+    // button_play_pause.addEventListener('click', () => {
+    //     paused = !paused;
+    //     if (paused) {
+    //         console.log('pausing');
+    //         button_play_pause.textContent = '▶️ Play';
+    //     } else {
+    //         console.log('playing');
+    //         requestAnimationFrame(draw);
+    //         button_play_pause.textContent = '⏸ Pause';
+    //     }
+    // })
 
-    const pre = document.querySelector('#output-pre');
-    pre.textContent = 'Hi there!';
+    // const pre = document.querySelector('#output-pre');
+    // pre.textContent = 'Hi there!';
 
-    const copy_alert = document.querySelector('#copy-alert');
-    const button_copy = document.querySelector('#button-copy');
-    button_copy.addEventListener('click', () => {
-        copyTextToClipboard(pre.textContent);
-        copy_alert.classList.remove('hidden');
-        setTimeout(() => copy_alert.classList.add('hidden'), 1000);
-    });
+    // const copy_alert = document.querySelector('#copy-alert');
+    // const button_copy = document.querySelector('#button-copy');
+    // button_copy.addEventListener('click', () => {
+    //     copyTextToClipboard(pre.textContent);
+    //     copy_alert.classList.remove('hidden');
+    //     setTimeout(() => copy_alert.classList.add('hidden'), 1000);
+    // });
 
     const res = await fetch('assets/wasm/fluidsim.wasm');
     if (!res.ok) return console.error('failed to fetch the wasm module. status:', res.status);
@@ -74,9 +84,20 @@ async function main() {
     go.run(module.instance);
 
     const decoder = new TextDecoder();
-    const address = module.instance.exports.GetBufferAddress();
-    // console.log('address', address);
-    const mem = new Uint8Array(module.instance.exports.mem.buffer, address, 32 * (64 + 1));
+    const _W = module.instance.exports.GetConstWidth();
+    const _H = module.instance.exports.GetConstHeight();
+    console.log('W', W, 'H', H, '_W', _W, '_H', _H);
+    const LEN = W * H;
+    const get_arr = (s, arr=Float32Array, buf_len = LEN) => {
+        const address = module.instance.exports[s]();
+        const mem = new arr(module.instance.exports.mem.buffer, address, buf_len);
+        // const mem = new Uint8Array(module.instance.exports.mem.buffer, address, buf_len);
+        return mem;
+    };
+    const A_COLOR = get_arr('GetAddrA_COLOR');
+    console.log('A_COLOR', A_COLOR);
+    // const addr_A_COLOR = module.instance.exports.GetAddrA_COLOR();
+    // const mem = new Uint8Array(module.instance.exports.mem.buffer, addr_A_COLOR, LEN);
     // console.log('mem', mem);
 
     let last_t = null;
@@ -93,7 +114,7 @@ async function main() {
         module.instance.exports.Step(0.01 * t);
         pre.textContent = decoder.decode(mem);
     }
-    requestAnimationFrame(draw);
+    // requestAnimationFrame(draw);
     console.log('done');
 }
 
