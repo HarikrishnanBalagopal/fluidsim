@@ -23,3 +23,5 @@ go.work
 # Build output
 /bin/
 /profiles/
+
+.DS_Store
