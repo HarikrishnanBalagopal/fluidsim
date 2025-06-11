@@ -37,7 +37,36 @@ function copyTextToClipboard(text) {
     });
 }
 
+const createImage = async (src) => {
+    const img = document.createElement('img');
+    img.setAttribute('width', 480);
+    img.setAttribute('height', 480);
+    img.setAttribute('src', src);
+    img.setAttribute('alt', 'random image');
+    // document.body.appendChild(img);
+    // return img;
+    return new Promise(resolve => img.addEventListener('load', () => resolve(img)));
+};
+
+const getImageData = (img) => {
+    // console.log('img', img);
+    const canvas = document.createElement('canvas');
+    // document.body.appendChild(canvas);
+    canvas.width = 480;
+    canvas.height = 480;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const img_data = ctx.getImageData(0, 0, 480, 480);
+    return img_data;
+};
+
 async function main() {
+    const img1 = await createImage('./assets/images/image1.png');
+    const imgdata1 = getImageData(img1);
+    console.log('img1', img1, 'imgdata1', imgdata1);
+    const img2 = await createImage('./assets/images/image2.png');
+    const imgdata2 = getImageData(img2);
+    console.log('img2', img2, 'imgdata2', imgdata2);
     const W = 480;
     const H = W;
     const canvas_output = document.querySelector('#canvas-output');
@@ -138,8 +167,15 @@ async function main() {
         pix_data.set(PIX_DATA);
         canvas_output_ctx.putImageData(img_data, 0, 0);
     };
-    for (let i = 0; i < LEN_4; i++) {
-        PIX_DATA_COPY[i] = 255;
+    for (let i = 0; i < LEN_4; i += 4) {
+        const r = imgdata1.data[i + 0];
+        const g = imgdata1.data[i + 1];
+        const b = imgdata1.data[i + 2];
+        const a = 255;
+        PIX_DATA_COPY[i + 0] = r;
+        PIX_DATA_COPY[i + 1] = g;
+        PIX_DATA_COPY[i + 2] = b;
+        PIX_DATA_COPY[i + 3] = a;
     }
     module.instance.exports.Setup();
     pix_data.set(PIX_DATA);
