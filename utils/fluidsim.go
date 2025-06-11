@@ -275,7 +275,7 @@ func Setup() {
 			A_COLOB[i] = clamp(b, 0, 1)
 		}
 	}
-	// draw();
+	draw()
 }
 
 // Placeholder is just here to make sure the compiler

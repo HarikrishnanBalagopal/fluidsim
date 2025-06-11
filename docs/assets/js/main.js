@@ -46,6 +46,8 @@ async function main() {
     const canvas_output_ctx = canvas_output.getContext('2d');
     const img_data = canvas_output_ctx.getImageData(0, 0, W, H);
     const pix_data = img_data.data;
+    // console.log('img_data', img_data);
+    // console.log('pix_data', pix_data);
 
 
     // const button_play_pause = document.querySelector('#button-play-pause');
@@ -83,26 +85,44 @@ async function main() {
     // console.log('module', module);
     go.run(module.instance);
 
-    const decoder = new TextDecoder();
+    // const decoder = new TextDecoder();
     const _W = module.instance.exports.GetConstWidth();
     const _H = module.instance.exports.GetConstHeight();
     console.log('W', W, 'H', H, '_W', _W, '_H', _H);
     const LEN = W * H;
-    const get_arr = (s, arr=Float32Array, buf_len = LEN) => {
+    const LEN_4 = LEN * 4;
+    const get_arr = (s, arr = Float32Array, buf_len = LEN) => {
         const address = module.instance.exports[s]();
+        // console.log('address', address);
         const mem = new arr(module.instance.exports.mem.buffer, address, buf_len);
         // const mem = new Uint8Array(module.instance.exports.mem.buffer, address, buf_len);
         return mem;
     };
     const A_COLOR = get_arr('GetAddrA_COLOR');
     console.log('A_COLOR', A_COLOR);
+    const A_COLOG = get_arr('GetAddrA_COLOG');
+    console.log('A_COLOG', A_COLOG);
+    const A_COLOB = get_arr('GetAddrA_COLOB');
+    console.log('A_COLOB', A_COLOB);
+    const A_PRESS = get_arr('GetAddrA_PRESS');
+    console.log('A_PRESS', A_PRESS);
+    const A_VEL_U = get_arr('GetAddrA_VEL_U');
+    console.log('A_VEL_U', A_VEL_U);
+    const A_VEL_V = get_arr('GetAddrA_VEL_V');
+    console.log('A_VEL_V', A_VEL_V);
+
+    const PIX_DATA = get_arr('GetAddrPIX_DATA', Uint8ClampedArray, LEN_4);
+    console.log('PIX_DATA', PIX_DATA);
+    const PIX_DATA_COPY = get_arr('GetAddrPIX_DATA_COPY', Uint8ClampedArray, LEN_4);
+    console.log('PIX_DATA_COPY', PIX_DATA_COPY);
+
     // const addr_A_COLOR = module.instance.exports.GetAddrA_COLOR();
     // const mem = new Uint8Array(module.instance.exports.mem.buffer, addr_A_COLOR, LEN);
     // console.log('mem', mem);
 
     let last_t = null;
     const TIME_STEP = 1;
-    function draw(t) {
+    const draw = (t) => {
         if (paused) { first = null; offset = last_t; return; }
         if (!first) first = t;
         requestAnimationFrame(draw);
@@ -111,9 +131,19 @@ async function main() {
         const delta_t = t - last_t;
         if (delta_t < TIME_STEP) return;
         last_t = t;
-        module.instance.exports.Step(0.01 * t);
-        pre.textContent = decoder.decode(mem);
+        // module.instance.exports.Step(0.01 * t);
+        module.instance.exports.Step(t, delta_t);
+        console.log('step', t, delta_t);
+        // pre.textContent = decoder.decode(mem);
+        pix_data.set(PIX_DATA);
+        canvas_output_ctx.putImageData(img_data, 0, 0);
+    };
+    for (let i = 0; i < LEN_4; i++) {
+        PIX_DATA_COPY[i] = 255;
     }
+    module.instance.exports.Setup();
+    pix_data.set(PIX_DATA);
+    canvas_output_ctx.putImageData(img_data, 0, 0);
     // requestAnimationFrame(draw);
     console.log('done');
 }
