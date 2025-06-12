@@ -1,5 +1,25 @@
 package utils
 
+//go:wasmexport SetMOUSE_DOWN
+func SetMOUSE_DOWN(down bool) {
+	MOUSE_DOWN = down
+}
+
+//go:wasmexport SetMOUSE_XY
+func SetMOUSE_XY(x int32, y int32) {
+	LAST_MOUSE_X = MOUSE_X
+	LAST_MOUSE_Y = MOUSE_Y
+	MOUSE_X = x
+	MOUSE_Y = y
+}
+
+//go:wasmexport SetINK_COLOR_RGB
+func SetINK_COLOR_RGB(r float32, g float32, b float32) {
+	INK_COLOR_R = r
+	INK_COLOR_G = g
+	INK_COLOR_B = b
+}
+
 //go:wasmexport GetConstWidth
 func GetConstWidth() int32 {
 	return W

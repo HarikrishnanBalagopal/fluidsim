@@ -27,11 +27,11 @@ var A_VEL_V = [LEN]float32{}
 var PIX_DATA = [LEN_4]uint8{}
 var PIX_DATA_COPY = [LEN_4]uint8{}
 
-const MOUSE_SIZE = 20
+const MOUSE_SIZE int32 = 20
 
 var MOUSE_DOWN = false
-var LAST_MOUSE_X = 0
-var LAST_MOUSE_Y = 0
-var MOUSE_X = 0
-var MOUSE_Y = 0
+var LAST_MOUSE_X int32 = 0
+var LAST_MOUSE_Y int32 = 0
+var MOUSE_X int32 = 0
+var MOUSE_Y int32 = 0
 var REQUESTED_ANIMATION = false
