@@ -11,8 +11,20 @@ build-wasm:
 	GOOS=js GOARCH=wasm go build -o bin/fluidsim.wasm
 
 .PHONY: decomp
-decomp:
+decomp: build-wasm
+	@echo decompile wasm
 	wasm2wat bin/fluidsim.wasm > bin/fluidsim.wat
+	cp bin/fluidsim.wat bin/copyfluidsim.wat
+
+.PHONY: recomp
+recomp:
+	@echo recompile wat
+	wat2wasm bin/copyfluidsim.wat -o bin/copyfluidsim.wasm
+
+.PHONY: recompcopy
+recompcopy: recomp
+	@echo copy recompile output
+	cp bin/copyfluidsim.wasm docs/assets/wasm/fluidsim.wasm
 
 .PHONY: build-tiny-wasm
 build-tiny-wasm:

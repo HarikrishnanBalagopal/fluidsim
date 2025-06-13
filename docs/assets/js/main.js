@@ -157,24 +157,34 @@ async function main() {
     // console.log('mem', mem);
 
     let last_t = null;
-    const TIME_STEP = 1 * 0.0001;
+    // const TIME_STEP = 1 * 0.0001;
     const draw = (_t) => {
-        let t = 0.0001 * _t;
-        if (paused) { first = null; offset = last_t; return; }
-        if (!first) first = t;
         requestAnimationFrame(draw);
-        t = t - first + offset;
-        if (!last_t) last_t = t;
-        const delta_t = t - last_t;
-        if (delta_t < TIME_STEP) return;
+        const t = _t * 0.001;
+        if (last_t < 0) last_t = t;
+        const dt = t - last_t;
+        if (dt < 0.001) return;
         last_t = t;
+
+        // let t = 0.0001 * _t;
+        // if (paused) { first = null; offset = last_t; return; }
+        // if (!first) first = t;
+        // requestAnimationFrame(draw);
+        // t = t - first + offset;
+        // if (!last_t) last_t = t;
+        // const delta_t = t - last_t;
+        // if (delta_t < TIME_STEP) return;
+        // last_t = t;
+
+
         // module.instance.exports.Step(0.01 * t);
-        try {
-            module.instance.exports.Step(t, delta_t);
-        } catch (e) {
-            paused = true;
-            console.error("Step failed", e);
-        }
+        module.instance.exports.Step(t, dt);
+        // try {
+        //     module.instance.exports.Step(t, delta_t);
+        // } catch (e) {
+        //     paused = true;
+        //     console.error("Step failed", e);
+        // }
         // console.log('step', t, delta_t);
         // pre.textContent = decoder.decode(mem);
         pix_data.set(PIX_DATA);
@@ -194,7 +204,6 @@ async function main() {
     pix_data.set(PIX_DATA);
     canvas_output_ctx.putImageData(img_data, 0, 0);
     {
-
         const handle_ink_color_change = (color_ink) => {
             const value = color_ink.value.slice(1);
             const r = parseInt(value.slice(0, 2), 16) / 255;
